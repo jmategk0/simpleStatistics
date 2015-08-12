@@ -11,6 +11,8 @@ class TestDescriptiveStatisticsMethods(unittest.TestCase):
         self.test_dataset2 = [3, 3, 4, 5, 7, 8]  # 4.5
         self.test_dataset3 = [1, 2, 3, 3, 3, 4]  # 3
         self.test_dataset4 = [1, 9, 8, 5, 8, 7]
+        self.test_dataset5 = [1, 0, 6, 1]
+        self.test_dataset6 = [1, 6, 4, 3, 8, 7, 6]
 
     def test_mode_with_valid_data_001(self):
         # arrange
@@ -62,6 +64,16 @@ class TestDescriptiveStatisticsMethods(unittest.TestCase):
         # assert
         self.assertEqual(median_result, 8)
 
+    def test_variance_001(self):
+        # arrange
+        variance_data = self.test_dataset5
+
+        # act
+        variance_result = self.descriptive_statistics.variance(variance_data)
+
+        # assert
+        self.assertEqual(variance_result, 5.50)
+
     def test_standard_deviation_001(self):
         # arrange
         sd_data = self.test_dataset1
@@ -74,7 +86,7 @@ class TestDescriptiveStatisticsMethods(unittest.TestCase):
 
     def test_standard_deviation_002(self):
         # arrange
-        sd_data = [1, 0, 6, 1]
+        sd_data = self.test_dataset5
 
         # act
         sd_result = self.descriptive_statistics.standard_deviation(sd_data, round_value=True)
@@ -82,34 +94,25 @@ class TestDescriptiveStatisticsMethods(unittest.TestCase):
         # assert
         self.assertEqual(sd_result, 2.35)
 
-    def test_sum_of_squared_deviations_001(self):
+    def test_standard_deviation_003(self):
         # arrange
-        sd_data = [1, 0, 6, 1]
+        sd_data = self.test_dataset6
 
         # act
-        sd_result = self.descriptive_statistics.sum_of_squared_deviations(sd_data)
+        sd_result = self.descriptive_statistics.standard_deviation(sd_data, is_population=False, round_value=True)
 
         # assert
-        self.assertEqual(sd_result, 22)
+        self.assertEqual(sd_result, 2.45)
 
-'''
-class TestStringMethods(unittest.TestCase):
+    def test_sum_of_squared_deviations_001(self):
+        # arrange: SS
+        ss_data = self.test_dataset5
 
-  def test_upper(self):
-      self.assertEqual('foo'.upper(), 'FOO')
+        # act
+        ss_result = self.descriptive_statistics.sum_of_squared_deviations(ss_data)
 
-  def test_isupper(self):
-      self.assertTrue('FOO'.isupper())
-      self.assertFalse('Foo'.isupper())
-
-  def test_split(self):
-      s = 'hello world'
-      self.assertEqual(s.split(), ['hello', 'world'])
-      # check that s.split fails when the separator is not a string
-      with self.assertRaises(TypeError):
-          s.split(2)
-'''
-
+        # assert
+        self.assertEqual(ss_result, 22)
 
 suite = unittest.TestLoader().loadTestsFromTestCase(TestDescriptiveStatisticsMethods)
 unittest.TextTestRunner(verbosity=2).run(suite)

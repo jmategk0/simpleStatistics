@@ -120,9 +120,9 @@ class DescriptiveStatistics(object):
             median = (float(list_of_values[high_midpoint]) + float(list_of_values[low_midpoint])) / 2
             return median
         else:
-            median_slot=len(list_of_values)/2
+            median_slot=len(list_of_values) / 2
             median = float(list_of_values[median_slot])
-            return  median
+            return median
 
     def mode(self,list_of_values):
         frequency_distribution_table= self.make_simple_frequency_distribution_table(list_of_values)
@@ -154,18 +154,21 @@ class DescriptiveStatistics(object):
             sumScores += self.deviation(mean,item)
         return sumScores
 
-    def variance(self, list_of_values):
-        sumScores=0
+    def variance(self, list_of_values, is_population=True):
+        sumScores = 0
         mean = self.mean(list_of_values)
         for item in list_of_values:
             deviation =  self.deviation(mean,item)
             sumScores += abs(deviation **2)
-        variance=sumScores/len(list_of_values)
+        if (is_population == True):
+            variance = sumScores / len(list_of_values)
+        else:
+            variance = sumScores / (len(list_of_values) - 1)  # sample variance uses degrees of freedom (df)
         return variance
 
-    def standard_deviation(self, list_of_values, round_value=False, degree_of_precision=2):
+    def standard_deviation(self, list_of_values, is_population=True, round_value=False, degree_of_precision=2):
         # page 94, start from here next time
-        variance = self.variance(list_of_values)
+        variance = self.variance(list_of_values, is_population)
         standard_deviation = math.sqrt(variance)
         if (round_value == False):
             pass
@@ -177,7 +180,7 @@ class DescriptiveStatistics(object):
         # SS = sigma(X-mew)^2
         sum_of_scores = self.the_sum_of_scores_from_list(list_of_values)
         squared_scores = self.square_all_values_in_list(list_of_values)
-        sum_of_squared_scores=sum(squared_scores)
+        sum_of_squared_scores = sum(squared_scores)
         number_of_scores = len(list_of_values)
         squared_sum_of_scores = (sum_of_scores ** 2)
         sum_of_squared_deviations = sum_of_squared_scores - (squared_sum_of_scores/number_of_scores)
@@ -191,7 +194,7 @@ class DescriptiveStatistics(object):
         interval_end = interval_start+interval
         number_of_intervals = ((max_value/interval)-(min_value/interval))
         intervalCheckList=[]
-        while (stop_flag==False):
+        while (stop_flag == False):
             if (counter <= number_of_intervals-1):
                 interval_start += interval
                 interval_end += interval
