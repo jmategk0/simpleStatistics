@@ -2,7 +2,7 @@
 # Population: is the set of all individuals of interest in a particular study
 # Sample: is a set of individuals selected from a population, usually intended to represent the population in a
 # research study
-# look at StatsModel, numpy, SciPy, and pandas
+# look at StatsModel, numpy, SciPy, and pandas if you want something faster
 # http://www.astro.cornell.edu/staff/loredo/statpy/
 # http://bonsai.hgc.jp/~mdehoon/software/python/Statistics/manual/index.xhtml
 # http://pandas.pydata.org/
@@ -114,20 +114,20 @@ class DescriptiveStatistics(object):
 
     def median(self, list_of_values):
         if ((len(list_of_values) % 2) == 0):
-            median_slot=(len(list_of_values) / 2) - 1
+            median_slot = (len(list_of_values) / 2) - 1
             low_midpoint = median_slot
             high_midpoint = median_slot+1
             median = (float(list_of_values[high_midpoint]) + float(list_of_values[low_midpoint])) / 2
             return median
         else:
-            median_slot=len(list_of_values) / 2
+            median_slot = len(list_of_values) / 2
             median = float(list_of_values[median_slot])
             return median
 
     def mode(self,list_of_values):
         frequency_distribution_table= self.make_simple_frequency_distribution_table(list_of_values)
         mode = 0
-        mode_frequency=0
+        mode_frequency = 0
         for value in frequency_distribution_table:
             if (frequency_distribution_table[value] >= mode):
                 mode_frequency = frequency_distribution_table[value]
@@ -141,29 +141,29 @@ class DescriptiveStatistics(object):
             mode = None
             return mode
 
-    def deviation(self, mean,score):
+    def deviation(self, mean, score):
         # deviationScore =X - mew
         deviation_score = (score - mean)
         return deviation_score
 
     def sum_of_deviation_scores(self, list_of_values):
         # Sigma(X - mew)
-        sumScores=0
+        sumScores = 0
         mean = self.mean(list_of_values)
         for item in list_of_values:
             sumScores += self.deviation(mean,item)
         return sumScores
 
     def variance(self, list_of_values, is_population=True):
-        sumScores = 0
+        sum_scores = 0
         mean = self.mean(list_of_values)
         for item in list_of_values:
-            deviation =  self.deviation(mean,item)
-            sumScores += abs(deviation **2)
+            deviation = self.deviation(mean, item)
+            sum_scores += abs(deviation **2)
         if (is_population == True):
-            variance = sumScores / len(list_of_values)
+            variance = sum_scores / len(list_of_values)
         else:
-            variance = sumScores / (len(list_of_values) - 1)  # sample variance uses degrees of freedom (df)
+            variance = sum_scores / (len(list_of_values) - 1)  # sample variance uses degrees of freedom (df)
         return variance
 
     def standard_deviation(self, list_of_values, is_population=True, round_value=False, degree_of_precision=2):
@@ -188,7 +188,7 @@ class DescriptiveStatistics(object):
 
     def make_class_intervals(self, min_value, max_value, interval):
         counter = 0
-        stop_flag=False
+        stop_flag = False
         class_interval_list = []
         interval_start = min_value-interval
         interval_end = interval_start+interval
@@ -198,7 +198,7 @@ class DescriptiveStatistics(object):
             if (counter <= number_of_intervals-1):
                 interval_start += interval
                 interval_end += interval
-                interval_end_cleaned=interval_end-1
+                interval_end_cleaned = interval_end-1
 
                 class_interval = (str(interval_start)+"-"+str(interval_end_cleaned))
                 class_interval_list.append(class_interval)
@@ -222,17 +222,17 @@ class DescriptiveStatistics(object):
         unique_list_values = self.get_unique_values_from_list(list_of_values)
         total_number_of_values = len(list_of_values)
         for value in unique_list_values:
-            table_row_dictionary={}
+            table_row_dictionary = {}
             table_row_dictionary["value"] = value
-            table_row_dictionary["frequency"] = self.count_occurrences_of_value(list_of_values,value)
-            table_row_dictionary["proportion"] = self.get_proportion_of_value(table_row_dictionary["frequency"],total_number_of_values)
+            table_row_dictionary["frequency"] = self.count_occurrences_of_value(list_of_values, value)
+            table_row_dictionary["proportion"] = self.get_proportion_of_value(table_row_dictionary["frequency"], total_number_of_values)
             table_row_dictionary["percent"] = self.get_percent_from_proportion(table_row_dictionary["proportion"])
             frequency_distribution_table.append(table_row_dictionary)
         return frequency_distribution_table
 
     def make_full_grouped_frequency_distribution_table(self, list_of_values, start_interval, max_interval_value, interval_width):
         frequency_distribution_table = []
-        class_interval_list = self.make_class_intervals(start_interval,max_interval_value,interval_width)
+        class_interval_list = self.make_class_intervals(start_interval, max_interval_value,interval_width)
 
         total_number_of_values = len(list_of_values)
         for value in class_interval_list:
@@ -256,7 +256,7 @@ class DescriptiveStatistics(object):
 
     def make_simple_grouped_frequency_distribution_table(self, list_of_values, start_interval, max_interval_value, interval_width):
         frequency_distribution_table = {}
-        class_interval_list = self.make_class_intervals(start_interval,max_interval_value,interval_width)
+        class_interval_list = self.make_class_intervals(start_interval, max_interval_value, interval_width)
 
         for value in class_interval_list:
             class_interval_values = value.split("-")
@@ -266,23 +266,53 @@ class DescriptiveStatistics(object):
             class_interval_frequency = 0
 
             while (counter <= higher_interval):
-                interval_frequency = self.count_occurrences_of_value(list_of_values,counter)
-                class_interval_frequency+=interval_frequency
+                interval_frequency = self.count_occurrences_of_value(list_of_values, counter)
+                class_interval_frequency += interval_frequency
                 counter += 1
             frequency_distribution_table[value] = class_interval_frequency
         return frequency_distribution_table
 
     def the_sum_of_simple_frequency_distribution_table(self, frequency_distribution_table):
         # sigmafX
-        sumOfTable = 0
-        for tableKey in frequency_distribution_table:
-            tableXValue = tableKey
-            tableFValue = frequency_distribution_table[tableKey]
-            sumOfTable += (tableFValue * tableXValue)
-        return sumOfTable
+        sum_of_table = 0
+        for table_key in frequency_distribution_table:
+            table_x_value = table_key
+            table_f_value = frequency_distribution_table[table_key]
+            sum_of_table += (table_f_value * table_x_value)
+        return sum_of_table
 
 class InferentialStatistics(object):
-    pass
+
+    def z_score_calculate(self, score_value, mean, standard_division, round_value=False, degree_of_precision=2):
+        z_score = (score_value - mean) / standard_division
+        if (round_value == False):
+            pass
+        else:
+            z_score = round(z_score, degree_of_precision)
+        return z_score
+
+    def score_value_from_z_score(self, mean, standard_division, z_score):
+        score_value = mean + (z_score * standard_division)
+        return score_value
+
+    def z_score_transformation(self, list_of_values):
+        descriptive_statistics = DescriptiveStatistics()
+        mean = descriptive_statistics.mean(list_of_values)
+        standard_deviation = descriptive_statistics.standard_deviation(list_of_values)
+        z_score_list = []
+        for item in list_of_values:
+            z_score = self.z_score_calculate(item, mean, standard_deviation)
+            z_score_list.append(z_score)
+        return z_score_list
+
+    def z_score_from_list(self, score_value, list_of_values):
+        descriptive_statistics = DescriptiveStatistics()
+        mean = descriptive_statistics.mean(list_of_values)
+        standard_deviation = descriptive_statistics.standard_deviation(list_of_values)
+        z_score = self.z_score_calculate(score_value, mean, standard_deviation)
+        return z_score
+
+        #new_list = [self.z_score_calculate(X, mean, standard_deviation) for X in list_of_values]
 
 class HypothesisTests(object):
     pass
