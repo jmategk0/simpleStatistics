@@ -159,7 +159,7 @@ class TestInferentialStatisticsMethods(unittest.TestCase):
         self.assertEqual(z_score_result, 1.29)
 
     def test_z_score_transformation_001(self):
-        # arrange:
+        # arrange
         raw_data = self.test_dataset2
         final_data = [-1.50, 1.50, 1.00, -0.50, 0, -0.50]
 
