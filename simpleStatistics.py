@@ -315,7 +315,7 @@ class InferentialStatistics(object):
         #new_list = [self.z_score_calculate(X, mean, standard_deviation) for X in list_of_values]
 
 class HypothesisTests(object):
-    pass
+    pass 
 
 class AnalysisOfVariance(object):
     pass
