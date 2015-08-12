@@ -2,31 +2,14 @@ __author__ = 'jmategk0'
 import unittest
 import simpleStatistics
 
-'''
-ds=descriptiveStatistics()
-
-L1=[3,5,8,10,11] #8
-L2=[3,3,4,5,7,8] #4.5
-L3 =[1,2,3,3,3,4] #3
-L4 =[1,9,5,8,7]
-
-var = ds.mode(L4)
-var1 = ds.median(L4)
-var2 = ds.mean(L4)
-var4=ds.standardDeviation(L4)
-print var
-print var1
-print var2
-print var4
-'''
 
 class TestDescriptiveStatisticsMethods(unittest.TestCase):
 
     def setUp(self):
         self.descriptive_statistics = simpleStatistics.DescriptiveStatistics()
-        self.test_dataset1 = [3, 5, 8, 10, 11] # 8
-        self.test_dataset2 = [3, 3, 4, 5, 7, 8] # 4.5
-        self.test_dataset3 = [1, 2, 3, 3, 3, 4] # 3
+        self.test_dataset1 = [3, 5, 8, 10, 11]  # 8
+        self.test_dataset2 = [3, 3, 4, 5, 7, 8]  # 4.5
+        self.test_dataset3 = [1, 2, 3, 3, 3, 4]  # 3
         self.test_dataset4 = [1, 9, 8, 5, 8, 7]
 
     def test_mode_with_valid_data_001(self):
@@ -91,7 +74,7 @@ class TestDescriptiveStatisticsMethods(unittest.TestCase):
 
     def test_standard_deviation_002(self):
         # arrange
-        sd_data = [1,0,6,1]
+        sd_data = [1, 0, 6, 1]
 
         # act
         sd_result = self.descriptive_statistics.standard_deviation(sd_data, round_value=True)
@@ -101,7 +84,7 @@ class TestDescriptiveStatisticsMethods(unittest.TestCase):
 
     def test_sum_of_squared_deviations_001(self):
         # arrange
-        sd_data = [1,0,6,1]
+        sd_data = [1, 0, 6, 1]
 
         # act
         sd_result = self.descriptive_statistics.sum_of_squared_deviations(sd_data)
