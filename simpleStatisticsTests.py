@@ -121,6 +121,8 @@ class TestInferentialStatisticsMethods(unittest.TestCase):
         self.inferential_statistics = simpleStatistics.InferentialStatistics()
         self.test_dataset1 = [3, 5, 8, 10, 11]  # 8
         self.test_dataset2 = [0.0, 6.0, 5.0, 2.0, 3.0, 2.0]
+        self.test_dataset3 = [0.0, 2.0, 4.0, 4.0, 5.0]
+        self.test_dataset4 = [360.0, 380.0, 420, 440]
 
     def test_z_score_calculate_001(self):
         # arrange: SS
@@ -169,9 +171,33 @@ class TestInferentialStatisticsMethods(unittest.TestCase):
         # assert
         self.assertEqual(z_score_results, final_data)
 
+    def test_z_score_transformation_002(self):
+        # arrange
+        raw_data = self.test_dataset3
+        final_data = [-1.5, -0.50, 0.50, 0.50, 1.00]
 
-suite = unittest.TestLoader().loadTestsFromTestCase(TestDescriptiveStatisticsMethods)
-unittest.TextTestRunner(verbosity=2).run(suite)
+        # act
+        z_score_results = self.inferential_statistics.z_score_transformation(raw_data, is_population=False, round_value=2)
 
-suite1 = unittest.TestLoader().loadTestsFromTestCase(TestInferentialStatisticsMethods)
-unittest.TextTestRunner(verbosity=2).run(suite1)
+        # assert
+        self.assertEqual(z_score_results, final_data)
+
+    def test_z_score_calculate_from_list_001(self):
+        # arrange
+        raw_data = self.test_dataset4
+        score = 418.0
+        final_z_score = 0.49
+
+        # act
+        z_score_result = self.inferential_statistics.z_score_calculate_from_list(score, raw_data, is_population=False, round_value=2)
+
+        # assert
+        self.assertEqual(z_score_result, final_z_score)
+
+
+
+descriptive_statistics_test_suite = unittest.TestLoader().loadTestsFromTestCase(TestDescriptiveStatisticsMethods)
+unittest.TextTestRunner(verbosity=2).run(descriptive_statistics_test_suite)
+
+inferential_statistics_test_suite = unittest.TestLoader().loadTestsFromTestCase(TestInferentialStatisticsMethods)
+unittest.TextTestRunner(verbosity=2).run(inferential_statistics_test_suite)

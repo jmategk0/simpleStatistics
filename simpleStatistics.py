@@ -193,7 +193,7 @@ class DescriptiveStatistics(object):
         interval_start = min_value-interval
         interval_end = interval_start+interval
         number_of_intervals = ((max_value/interval)-(min_value/interval))
-        intervalCheckList=[]
+        interval_check_list = []
         while (stop_flag == False):
             if (counter <= number_of_intervals-1):
                 interval_start += interval
@@ -291,31 +291,42 @@ class InferentialStatistics(object):
             z_score = round(z_score, degree_of_precision)
         return z_score
 
+    def z_score_calculate_from_list(self, score_value, list_of_values, is_population, round_value=False, degree_of_precision=2):
+        descriptive_statistics = DescriptiveStatistics()
+        mean = descriptive_statistics.mean(list_of_values)
+        standard_deviation = descriptive_statistics.standard_deviation(list_of_values, is_population)
+        z_score = self.z_score_calculate(score_value, mean, standard_deviation, round_value, degree_of_precision)
+        return z_score
+
     def score_value_from_z_score(self, mean, standard_division, z_score):
         score_value = mean + (z_score * standard_division)
         return score_value
 
-    def z_score_transformation(self, list_of_values):
+    def z_score_transformation(self, list_of_values, is_population=True, round_value=False, degree_of_precision=2):
         descriptive_statistics = DescriptiveStatistics()
         mean = descriptive_statistics.mean(list_of_values)
-        standard_deviation = descriptive_statistics.standard_deviation(list_of_values)
+        standard_deviation = descriptive_statistics.standard_deviation(list_of_values, is_population, round_value, degree_of_precision)
         z_score_list = []
         for item in list_of_values:
             z_score = self.z_score_calculate(item, mean, standard_deviation)
             z_score_list.append(z_score)
         return z_score_list
 
-    def z_score_from_list(self, score_value, list_of_values):
+    def z_score_from_list(self, score_value, list_of_values, is_population=True, round_value=False, degree_of_precision=2):
         descriptive_statistics = DescriptiveStatistics()
         mean = descriptive_statistics.mean(list_of_values)
-        standard_deviation = descriptive_statistics.standard_deviation(list_of_values)
+        standard_deviation = descriptive_statistics.standard_deviation(list_of_values,is_population, round_value, degree_of_precision)
         z_score = self.z_score_calculate(score_value, mean, standard_deviation)
         return z_score
 
         #new_list = [self.z_score_calculate(X, mean, standard_deviation) for X in list_of_values]
 
+    def probability(self, number_of_outcomes, total_number_of_possible_outcomes):
+        probability_value = number_of_outcomes / total_number_of_possible_outcomes
+        return probability_value
+
 class HypothesisTests(object):
-    pass 
+    pass
 
 class AnalysisOfVariance(object):
     pass
