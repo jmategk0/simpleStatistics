@@ -123,6 +123,8 @@ class TestInferentialStatisticsMethods(unittest.TestCase):
         self.test_dataset2 = [0.0, 6.0, 5.0, 2.0, 3.0, 2.0]
         self.test_dataset3 = [0.0, 2.0, 4.0, 4.0, 5.0]
         self.test_dataset4 = [360.0, 380.0, 420, 440]
+        unit_normal_table = {}
+        unit_normal_table[0.00]={'body': .5000, 'tail': .5000, 'mean_to_z': .0000}
 
     def test_z_score_calculate_001(self):
         # arrange: SS

@@ -58,10 +58,10 @@ class DescriptiveStatistics(object):
         summed_list = self.the_sum_of_scores_from_list(subtracted_squared_list)
         return summed_list
 
-    def min_value_of_list(self, list_of_values):
+    def minimum(self, list_of_values):
         return min(list_of_values)
 
-    def max_value_of_list(self, list_of_values):
+    def maximum(self, list_of_values):
         return max(list_of_values)
 
     def get_range_of_list_values(self, list_of_values):
@@ -281,6 +281,19 @@ class DescriptiveStatistics(object):
             sum_of_table += (table_f_value * table_x_value)
         return sum_of_table
 
+    def summarise_descriptive_statistics(self, list_of_values, is_population=False):
+        summary_data = {}
+        summary_data["mean"] = self.mean(list_of_values)
+        summary_data["median"] = self.median(list_of_values)
+        summary_data["mode"] = self.mode(list_of_values)
+        summary_data["number"] = len(list_of_values)
+        summary_data["minimum"] = self.minimum(list_of_values)
+        summary_data["maximum"] = self.maximum(list_of_values)
+        summary_data["range"] = self.range(summary_data["minimum"], summary_data["maximum"])
+        summary_data["standard_deviation"] = self.standard_deviation(list_of_values, is_population)
+        return summary_data
+
+
 class InferentialStatistics(object):
 
     def z_score_calculate(self, score_value, mean, standard_division, round_value=False, degree_of_precision=2):
@@ -325,11 +338,14 @@ class InferentialStatistics(object):
         probability_value = number_of_outcomes / total_number_of_possible_outcomes
         return probability_value
 
+
 class HypothesisTests(object):
     pass
 
+
 class AnalysisOfVariance(object):
     pass
+
 
 class CorrelationAndNonparametricTests(object):
     pass
