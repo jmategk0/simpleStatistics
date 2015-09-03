@@ -18,5 +18,7 @@ summarised_data = descriptive_statistics.summarise_descriptive_statistics(test_d
 
 print(summarised_data)
 
-# Above command results
-# {'min': 1, 'max': 4, 'median': 3.0, 'number': 6, 'range': 3, 'mode': 3, 'standard_deviation': 1.032, 'mean': 2.66}
+'''
+ Above command results
+ {'min': 1, 'max': 4, 'median': 3.0, 'number': 6, 'range': 3, 'mode': 3, 'standard_deviation': 1.032, 'mean': 2.66}
+'''
