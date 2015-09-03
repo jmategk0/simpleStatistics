@@ -19,6 +19,7 @@ inferentialStatistics = simpleStatistics.InferentialStatistics()
 summarised_data = descriptive_statistics.summarise_descriptive_statistics(test_data)
 
 z_score_of_max = inferentialStatistics.z_score_calculate(summarised_data["max"],summarised_data["mean"],summarised_data["standard_deviation"])
+
 score_at_z_3=inferentialStatistics.score_value_from_z_score(summarised_data["mean"],summarised_data["standard_deviation"],z_score=3.0)
 
 print(summarised_data)
