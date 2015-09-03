@@ -9,18 +9,26 @@ in a semester long undergraduate research statistics course. simpleStatistics is
 curve for people with a rudimentary understanding of statistics so they can solve problems in code more quickly.
 
 Examples:
-
 import simpleStatistics
 
 test_data = [1, 2, 3, 3, 3, 4]
 
 descriptive_statistics = simpleStatistics.DescriptiveStatistics()
+inferentialStatistics = simpleStatistics.InferentialStatistics()
 
 summarised_data = descriptive_statistics.summarise_descriptive_statistics(test_data)
 
-print(summarised_data)
+z_score_of_max = inferentialStatistics.z_score_calculate(summarised_data["max"],summarised_data["mean"],summarised_data["standard_deviation"])
+score_at_z_3=inferentialStatistics.score_value_from_z_score(summarised_data["mean"],summarised_data["standard_deviation"],z_score=3.0)
 
-'''
- Above command results
- {'min': 1, 'max': 4, 'median': 3.0, 'number': 6, 'range': 3, 'mode': 3, 'standard_deviation': 1.032, 'mean': 2.66}
-'''
+print(summarised_data)
+print(z_score_of_max)
+print(score_at_z_3)
+
+-------------------------------
+Above command results
+{'min': 1, 'max': 4, 'median': 3.0, 'number': 6, 'range': 3, 'mode': 3, 'standard_deviation': 1.032, 'mean': 2.66}
+
+1.29
+
+5.76
