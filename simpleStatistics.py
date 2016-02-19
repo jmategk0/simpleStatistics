@@ -8,7 +8,7 @@
 # 5. Code usability is targeted to be "self documenting" and descriptive enough to be used by python novices, including
 # people without formal training in software development
 # Note: This is not a good library if you need high performance, this is good library if you want basic features with a
-# low learning curve 
+# low learning curve
 
 import math
 
