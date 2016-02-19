@@ -1,11 +1,14 @@
-# 
-# Population: is the set of all individuals of interest in a particular study
-# Sample: is a set of individuals selected from a population, usually intended to represent the population in a
-# research study
-# look at StatsModel, numpy, SciPy, and pandas if you want something faster
-# http://www.astro.cornell.edu/staff/loredo/statpy/
-# http://bonsai.hgc.jp/~mdehoon/software/python/Statistics/manual/index.xhtml
-# http://pandas.pydata.org/
+# author jmategk0
+# Goals:
+# 1. Produce an intermediate level python library with more features than the built-in stats module in
+# python 3.4+ but with a simplified interface and syntax compared with more robust libraries like pandas.
+# 2. The code will by compatible with python 2.7 and python 3.5
+# 3. Library has no dependencies outside the standard python library
+# 4. Code organisation and syntax will make sense intuitively to anyone who passed undergraduate level statistics
+# 5. Code usability is targeted to be "self documenting" and descriptive enough to be used by python novices, including
+# people without formal training in software development
+# Note: This is not a good library if you need high performance, this is good library if you want basic features with a
+# low learning curve 
 
 import math
 
@@ -113,7 +116,7 @@ class DescriptiveStatistics(object):
         return overall_mean
 
     def median(self, list_of_values):
-        if ((len(list_of_values) % 2) == 0):
+        if (len(list_of_values) % 2) == 0:
             median_slot = (len(list_of_values) / 2) - 1
             low_midpoint = median_slot
             high_midpoint = median_slot+1
@@ -124,18 +127,18 @@ class DescriptiveStatistics(object):
             median = float(list_of_values[median_slot])
             return median
 
-    def mode(self,list_of_values):
-        frequency_distribution_table= self.make_simple_frequency_distribution_table(list_of_values)
+    def mode(self, list_of_values):
+        frequency_distribution_table = self.make_simple_frequency_distribution_table(list_of_values)
         mode = 0
         mode_frequency = 0
         for value in frequency_distribution_table:
-            if (frequency_distribution_table[value] >= mode):
+            if frequency_distribution_table[value] >= mode:
                 mode_frequency = frequency_distribution_table[value]
                 # mode = frequencyDistributionTable[value]
                 mode = value
             else:
                 pass
-        if(mode_frequency >= 2):
+        if mode_frequency >= 2:
             return mode
         else:
             mode = None
@@ -148,11 +151,11 @@ class DescriptiveStatistics(object):
 
     def sum_of_deviation_scores(self, list_of_values):
         # Sigma(X - mew)
-        sumScores = 0
+        sum_scores = 0
         mean = self.mean(list_of_values)
         for item in list_of_values:
-            sumScores += self.deviation(mean,item)
-        return sumScores
+            sum_scores += self.deviation(mean, item)
+        return sum_scores
 
     def variance(self, list_of_values, is_population=True):
         sum_scores = 0
@@ -160,7 +163,7 @@ class DescriptiveStatistics(object):
         for item in list_of_values:
             deviation = self.deviation(mean, item)
             sum_scores += abs(deviation **2)
-        if (is_population == True):
+        if is_population == True:
             variance = sum_scores / len(list_of_values)
         else:
             variance = sum_scores / (len(list_of_values) - 1)  # sample variance uses degrees of freedom (df)
@@ -170,7 +173,7 @@ class DescriptiveStatistics(object):
         # page 94, start from here next time
         variance = self.variance(list_of_values, is_population)
         standard_deviation = math.sqrt(variance)
-        if (round_value == False):
+        if round_value == False:
             pass
         else:
             standard_deviation = round(standard_deviation, degree_of_precision)
@@ -190,21 +193,21 @@ class DescriptiveStatistics(object):
         counter = 0
         stop_flag = False
         class_interval_list = []
-        interval_start = min_value-interval
-        interval_end = interval_start+interval
-        number_of_intervals = ((max_value/interval)-(min_value/interval))
-        interval_check_list = []
-        while (stop_flag == False):
-            if (counter <= number_of_intervals-1):
+        interval_start = min_value - interval
+        interval_end = interval_start + interval
+        number_of_intervals = ((max_value/interval) - (min_value/interval))
+
+        while stop_flag == False:
+            if counter <= number_of_intervals-1:
                 interval_start += interval
                 interval_end += interval
                 interval_end_cleaned = interval_end-1
 
-                class_interval = (str(interval_start)+"-"+str(interval_end_cleaned))
+                class_interval = (str(interval_start) + "-" + str(interval_end_cleaned))
                 class_interval_list.append(class_interval)
                 counter += 1
             else:
-                stop_flag=True
+                stop_flag = True
                 counter += 1
         return class_interval_list
 
@@ -232,7 +235,7 @@ class DescriptiveStatistics(object):
 
     def make_full_grouped_frequency_distribution_table(self, list_of_values, start_interval, max_interval_value, interval_width):
         frequency_distribution_table = []
-        class_interval_list = self.make_class_intervals(start_interval, max_interval_value,interval_width)
+        class_interval_list = self.make_class_intervals(start_interval, max_interval_value, interval_width)
 
         total_number_of_values = len(list_of_values)
         for value in class_interval_list:
@@ -242,14 +245,14 @@ class DescriptiveStatistics(object):
             higher_interval = int(class_interval_values[1])
             counter = lower_interval
             class_interval_frequency = 0
-            while (counter <= higher_interval):
-                interval_frequency = self.count_occurrences_of_value(list_of_values,counter)
+            while counter <= higher_interval:
+                interval_frequency = self.count_occurrences_of_value(list_of_values, counter)
                 class_interval_frequency += interval_frequency
                 counter += 1
 
             table_row_dictionary["value"] = value
             table_row_dictionary["frequency"] = class_interval_frequency
-            table_row_dictionary["proportion"] = self.get_proportion_of_value(table_row_dictionary["frequency"],total_number_of_values)
+            table_row_dictionary["proportion"] = self.get_proportion_of_value(table_row_dictionary["frequency"], total_number_of_values)
             table_row_dictionary["percent"] = self.get_percent_from_proportion(table_row_dictionary["proportion"])
             frequency_distribution_table.append(table_row_dictionary)
         return frequency_distribution_table
@@ -265,7 +268,7 @@ class DescriptiveStatistics(object):
             counter = lower_interval
             class_interval_frequency = 0
 
-            while (counter <= higher_interval):
+            while counter <= higher_interval:
                 interval_frequency = self.count_occurrences_of_value(list_of_values, counter)
                 class_interval_frequency += interval_frequency
                 counter += 1
@@ -298,7 +301,7 @@ class InferentialStatistics(object):
 
     def z_score_calculate(self, score_value, mean, standard_division, round_value=False, degree_of_precision=2):
         z_score = (score_value - mean) / standard_division
-        if (round_value == False):
+        if round_value == False:
             pass
         else:
             z_score = round(z_score, degree_of_precision)
@@ -331,8 +334,6 @@ class InferentialStatistics(object):
         standard_deviation = descriptive_statistics.standard_deviation(list_of_values,is_population, round_value, degree_of_precision)
         z_score = self.z_score_calculate(score_value, mean, standard_deviation)
         return z_score
-
-        #new_list = [self.z_score_calculate(X, mean, standard_deviation) for X in list_of_values]
 
     def probability(self, number_of_outcomes, total_number_of_possible_outcomes):
         probability_value = number_of_outcomes / total_number_of_possible_outcomes
